@@ -8,6 +8,7 @@ import scala.io.Source._
 object Compiler {
 
   var fileContent: String = ""
+  var currentToken: String = ""
 
   def main(args: Array[String]): Unit = {
     val flname : String = args(0)
