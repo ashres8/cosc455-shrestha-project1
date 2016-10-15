@@ -6,4 +6,6 @@ package edu.towson.cosc.cosc455.ashrestha.project1
 class CONSTENT {
   val DOCB: String = "\\BEGIN"
   val DOCE: String = "\\END"
+  val TITLEB: String = "\\TITLE["
+  val SQBRACKETE: String = "]"
 }

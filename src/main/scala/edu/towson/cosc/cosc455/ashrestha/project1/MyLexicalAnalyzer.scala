@@ -8,7 +8,9 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
 
   override def getChar(): Char = ???
 
-  override def getNextToken(): Unit = ???
+  override def getNextToken(): Unit = {
+    println("Getting Token...")
+  }
 
   override def lookup(): Boolean = ???
 }

@@ -10,18 +10,28 @@ object Compiler {
   var fileContent: String = ""
   var currentToken: String = ""
 
+  val Scanner = new MyLexicalAnalyzer
+  val Parser = new MySyntaxAnalyzer
+  val SemanticAna = new MySemanticAnalyzer
+
   def main(args: Array[String]): Unit = {
-    val flname : String = args(0)
-    println(flname)
-
-    readFile(flname)
-
+    fileCheck(args)
     println(fileContent)
+
+    Scanner.getNextToken()
   }
 
   def fileCheck(args: Array[String]): Unit ={
     if (args.length != 1){
-
+      println("Error: There are too many arguments. Please enter a *.mkd File.")
+      System.exit(1)
+    } else {
+      if(!args(0).endsWith(".mkd")){
+        println("Error: Please enter a *.mkd File.")
+        System.exit(1)
+      } else {
+        readFile(args(0))
+      }
     }
   }
 
