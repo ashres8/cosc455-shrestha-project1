@@ -10,6 +10,7 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
 
   override def getNextToken(): Unit = {
     println("Getting Token...")
+    println("Getting Token...")
   }
 
   override def lookup(): Boolean = ???
