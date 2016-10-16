@@ -18,7 +18,11 @@ object Compiler {
     fileCheck(args)
     println(fileContent)
 
+    Scanner.listFileContent = fileContent.toCharArray()
+
     Scanner.getNextToken()
+
+    println("Compiler: " + currentToken)
   }
 
   def fileCheck(args: Array[String]): Unit ={
