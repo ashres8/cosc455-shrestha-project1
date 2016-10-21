@@ -21,7 +21,7 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
   }
 
   override def getNextToken(): Unit = {
-    println("Getting Token...")
+    //println("Getting Token...")
     strToken = ""
     currentChar = getChar()
     while(isSpace(currentChar)) {
@@ -31,9 +31,7 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
     if(constant.SpacialChar.contains(currentChar)){
       spacialChar()
     } else {
-      println("Found Normal Char: " + currentChar)
-      addChar()
-      currentChar = getChar()
+      textChar()
     }
 
     println(strToken)
@@ -49,8 +47,22 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
     false
   }
 
+  def textChar() = {
+    while(!constant.SpacialChar.contains(currentChar) && !isSpace(currentChar) && currentChar != '\n'){
+      //println("Found Normal Char: " + currentChar)
+      addChar()
+      currentChar = getChar()
+    }
+
+    if(currentChar == '\n'){
+      strToken = strToken.dropRight(1)
+      
+    }
+
+  }
+
   def spacialChar(): Unit ={
-    while(!isSpace(currentChar) && currentChar != '\n') {
+    /* while(!isSpace(currentChar) && currentChar != '\n') {
       println("Found Char: " + currentChar)
       addChar()
       currentChar = getChar()
@@ -58,13 +70,53 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
     //println(strToken)
     if(currentChar == '\n'){
       strToken = strToken.dropRight(1)
+    } */
+
+    if(currentChar == '\\'){
+      do{
+        addChar()
+        currentChar = getChar()
+      } while (currentChar != '[' && currentChar != '\n' && !isSpace(currentChar))
+
+      if(currentChar == '\n'){
+        strToken = strToken.dropRight(1)
+      } else {
+        addChar()
+      }
+    } else if(currentChar == '*'){
+
+    } else if(currentChar == '!'){
+      addChar()
+      currentChar = getChar()
+      if (currentChar == '['){
+        addChar()
+        currentChar = getChar()
+      } else {
+        errorAndQuit("Lexical Error:: Can't find '" + currentChar + "'")
+      }
+    } else if(currentChar == ']'){
+      addChar()
+      currentChar = getChar()
+      if (currentChar == '('){
+        addChar()
+        currentChar = getChar()
+      } else {
+        errorAndQuit("Lexical Error:: Can't find '" + currentChar + "'")
+      }
+    } else {
+      addChar()
+      currentChar = getChar()
     }
 
     if(!lookup()){
-      println("Lexical Error:: can't find '" + strToken + "'")
-      System.exit(1)
+      errorAndQuit("Lexical Error:: can't find '" + strToken + "'")
     }
   }
 
   def isSpace(c: Char): Boolean = c == ' '
+
+  def errorAndQuit(str: String): Unit = {
+    println(str)
+    System.exit(1)
+  }
 }
