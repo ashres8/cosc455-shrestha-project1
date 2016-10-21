@@ -8,6 +8,20 @@ class CONSTENT {
   val DOCE: String = "\\END"
   val TITLEB: String = "\\TITLE["
   val SQBRACKETE: String = "]"
-  val ArrayOfTokens: Array[String] = Array(DOCB, DOCE, TITLEB, SQBRACKETE)
+  val HEADING = "#"
+  val PARAB = "\\PARAB"
+  val PARAE = "\\PARAE"
+  val BOLD = "**"
+  val ITALICS = "*"
+  val LISTITEM = "+"
+  val NEWLINE = "\\\\"
+  val LINKB = "["
+  val ADDRESSB = "("
+  val ADDRESSE = ")"
+  val IMAGEB = "!["
+  val DEFB = "\\DEF["
+  val EQSIGN = "="
+  val USEB = "\\USE["
+  val ArrayOfTokens: Array[String] = Array(DOCB, DOCE, TITLEB, SQBRACKETE, PARAB, PARAE, NEWLINE, DEFB, USEB)
   val SpacialChar: Array[Char] = Array('\\', '*', '!', '[')
 }

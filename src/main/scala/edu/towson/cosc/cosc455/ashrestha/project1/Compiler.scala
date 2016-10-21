@@ -20,9 +20,10 @@ object Compiler {
 
     Scanner.listFileContent = fileContent.toCharArray()
 
-    Scanner.getNextToken()
-
-    println("Compiler: " + currentToken)
+    while(true){
+      Scanner.getNextToken()
+      println("Compiler: " + currentToken)
+    }
   }
 
   def fileCheck(args: Array[String]): Unit ={

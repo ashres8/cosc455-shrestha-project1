@@ -56,7 +56,10 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
       currentChar = getChar()
     }
     //println(strToken)
-    strToken = strToken.dropRight(1)
+    if(currentChar == '\n'){
+      strToken = strToken.dropRight(1)
+    }
+
     if(!lookup()){
       println("Lexical Error:: can't find '" + strToken + "'")
       System.exit(1)
