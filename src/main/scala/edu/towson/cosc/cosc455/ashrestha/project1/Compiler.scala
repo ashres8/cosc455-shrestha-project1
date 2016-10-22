@@ -16,16 +16,14 @@ object Compiler {
 
   def main(args: Array[String]): Unit = {
     fileCheck(args)
-    //println(fileContent)
-
-    println(fileContent.toArray.length)
+    println(fileContent)
 
     Scanner.listFileContent = fileContent.toArray
 
-    while(true){
-      Scanner.getNextToken()
-      println("Compiler: " + currentToken)
-    }
+    Scanner.getNextToken()
+    println("Compiler: " + currentToken)
+
+    Parser.gittex()
   }
 
   def fileCheck(args: Array[String]): Unit ={

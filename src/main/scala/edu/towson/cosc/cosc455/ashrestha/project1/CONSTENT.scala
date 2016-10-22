@@ -23,6 +23,6 @@ class CONSTENT {
   val EQSIGN = "="
   val USEB = "\\USE["
   val NEXTLINE = "\n"
-  val ArrayOfTokens: Array[String] = Array(DOCB, DOCE, TITLEB, SQBRACKETE, PARAB, PARAE, NEWLINE, DEFB, USEB, LINKB, IMAGEB, EQSIGN, ADDRESSE, ADDRESSB, LISTITEM, ITALICS, BOLD, NEXTLINE)
-  val SpacialChar: Array[Char] = Array('\\', '*', '!', '[', ']', '(', ')')
+  val ArrayOfTokens: Array[String] = Array(DOCB, DOCE, TITLEB, SQBRACKETE, PARAB, PARAE, NEWLINE, DEFB, USEB, LINKB, IMAGEB, EQSIGN, ADDRESSE, ADDRESSB, LISTITEM, ITALICS, BOLD, HEADING)
+  val SpacialChar: Array[Char] = Array('\\', '*', '!', '[', ']', '(', ')', '+', '#', '=')
 }
