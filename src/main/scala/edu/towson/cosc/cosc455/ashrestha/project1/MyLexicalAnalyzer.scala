@@ -15,7 +15,7 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
   }
 
   override def getChar(): Char = {
-    var c: Char = listFileContent(fileIndex)
+    val c: Char = listFileContent(fileIndex)
     fileIndex = fileIndex + 1
     c
   }
@@ -23,8 +23,7 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
   override def getNextToken(): Unit = {
     //println("Getting Token...")
     strToken = ""
-    currentChar = getChar()
-    while(isSpace(currentChar)) {
+    while(isSpace(currentChar) || currentChar == '\n') {
       currentChar = getChar()
     }
 
@@ -48,17 +47,11 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
   }
 
   def textChar() = {
-    while(!constant.SpacialChar.contains(currentChar) && !isSpace(currentChar) && currentChar != '\n'){
+    do{
       //println("Found Normal Char: " + currentChar)
       addChar()
       currentChar = getChar()
-    }
-
-    if(currentChar == '\n'){
-      strToken = strToken.dropRight(1)
-      
-    }
-
+    } while (!constant.SpacialChar.contains(currentChar) && !isSpace(currentChar) && currentChar != '\n')
   }
 
   def spacialChar(): Unit ={
@@ -82,22 +75,19 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
         strToken = strToken.dropRight(1)
       } else {
         addChar()
+        currentChar = getChar()
       }
     } else if(currentChar == '*'){
-
+      addChar()
+      currentChar = getChar()
+      if(currentChar == '*'){
+        addChar()
+        currentChar = getChar()
+      }
     } else if(currentChar == '!'){
       addChar()
       currentChar = getChar()
       if (currentChar == '['){
-        addChar()
-        currentChar = getChar()
-      } else {
-        errorAndQuit("Lexical Error:: Can't find '" + currentChar + "'")
-      }
-    } else if(currentChar == ']'){
-      addChar()
-      currentChar = getChar()
-      if (currentChar == '('){
         addChar()
         currentChar = getChar()
       } else {

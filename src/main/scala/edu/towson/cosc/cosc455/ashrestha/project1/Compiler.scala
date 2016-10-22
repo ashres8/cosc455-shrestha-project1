@@ -16,9 +16,11 @@ object Compiler {
 
   def main(args: Array[String]): Unit = {
     fileCheck(args)
-    println(fileContent)
+    //println(fileContent)
 
-    Scanner.listFileContent = fileContent.toCharArray()
+    println(fileContent.toArray.length)
+
+    Scanner.listFileContent = fileContent.toArray
 
     while(true){
       Scanner.getNextToken()
