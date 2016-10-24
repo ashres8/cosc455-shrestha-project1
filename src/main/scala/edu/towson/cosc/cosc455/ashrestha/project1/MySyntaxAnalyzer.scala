@@ -14,6 +14,8 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
       body()
       if(Compiler.currentToken == constent.DOCE){
         println("Done !!")
+      }else {
+        errorAndQuit("Syntax Error: Document End missing : " + constent.DOCE)
       }
     } else {
       errorAndQuit("Syntax Error: Document Start missing : " + constent.DOCB)
@@ -28,7 +30,7 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
         println("Text Begin Found !!")
         Compiler.Scanner.getNextToken()
         if(Compiler.currentToken == constent.SQBRACKETE){
-          println("Text End Found !!")
+          println("Title End Found !!")
           Compiler.Scanner.getNextToken()
         } else {
           errorAndQuit("Syntax Error: Title End missing : " + constent.SQBRACKETE)
