@@ -9,9 +9,9 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
   override def gittex(): Unit = {
     if(Compiler.currentToken == constent.DOCB){
       Compiler.Scanner.getNextToken()
-      //variableDefine()
+      variableDefine()
       title()
-      //body()
+      body()
       if(Compiler.currentToken == constent.DOCE){
         println("Done !!")
       }
@@ -41,7 +41,11 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
     }
   }
 
-  override def body(): Unit = ???
+  override def body(): Unit = {
+    paragraph()
+    heading()
+    innerText()
+  }
 
   override def paragraph(): Unit = ???
 
@@ -49,7 +53,31 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
 
   override def heading(): Unit = ???
 
-  override def variableDefine(): Unit = ???
+  override def variableDefine(): Unit = {
+    if(Compiler.currentToken == constent.DEFB) {
+      Compiler.Scanner.getNextToken()
+      if(Compiler.currentToken == constent.SQBRACKETE){
+        Compiler.Scanner.getNextToken()
+        if(Compiler.currentToken == constent.ADDRESSB){
+          Compiler.Scanner.getNextToken()
+          if(isText(Compiler.currentToken)){
+            Compiler.Scanner.getNextToken()
+            if(Compiler.currentToken == constent.ADDRESSE){
+              Compiler.Scanner.getNextToken()
+            } else {
+              errorAndQuit("Syntax Error: Variable Def Error, missing : " + constent.ADDRESSE)
+            }
+          } else {
+            errorAndQuit("Syntax Error: Variable Def Error, Not Text")
+          }
+        } else {
+          errorAndQuit("Syntax Error: Variable Def Error, missing : " + constent.ADDRESSB)
+        }
+      } else {
+        errorAndQuit("Syntax Error: Variable Def Error, missing : " + constent.SQBRACKETE)
+      }
+    }
+  }
 
   override def variableUse(): Unit = ???
 
