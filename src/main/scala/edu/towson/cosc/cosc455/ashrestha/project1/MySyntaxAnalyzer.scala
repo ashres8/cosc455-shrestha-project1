@@ -34,7 +34,7 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
           Compiler.Scanner.getNextToken()
         } else errorAndQuit("Syntax Error: Title End missing : " + constent.SQBRACKETE)
       } else errorAndQuit("Syntax Error: Not Text")
-    } else errorAndQuit("Syntax Error: Title Start missing : " + constent.TITLEB)
+    } else errorAndQuit("Syntax Error: Title Start missing : " + constent.TITLEB + " LIST: " + Compiler.currentToken)
   }
 
   var bodyfound: Boolean = false
@@ -63,7 +63,7 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
   var itfound: Boolean = false
   override def innerText(): Unit = {
     while((!constent.notBody.contains(Compiler.currentToken)) && Compiler.currentToken != constent.PARAB){
-      println("Inner Text:" + Compiler.currentToken)
+      //println("Inner Text: " + Compiler.currentToken)
       if(!itfound) heading()
       if(!itfound) bold()
       if(!itfound) variableUse()
@@ -78,38 +78,36 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
       Compiler.Scanner.getNextToken()
       if(isText(Compiler.currentToken)){
         Compiler.Scanner.getNextToken()
-      }else errorAndQuit("Syntax Error: Text after Heading is missing.")
+      } else errorAndQuit("Syntax Error: Text after Heading is missing.")
     }
   }
 
   override def variableDefine(): Unit = {
     if(Compiler.currentToken == constent.DEFB) {
       Compiler.Scanner.getNextToken()
-      if(Compiler.currentToken == constent.SQBRACKETE){
+      if(isText(Compiler.currentToken)){
         Compiler.Scanner.getNextToken()
-        if(Compiler.currentToken == constent.ADDRESSB){
+        if(Compiler.currentToken == constent.EQSIGN){
           Compiler.Scanner.getNextToken()
           if(isText(Compiler.currentToken)){
             Compiler.Scanner.getNextToken()
-            if(Compiler.currentToken == constent.ADDRESSE){
+            if(Compiler.currentToken == constent.SQBRACKETE){
               Compiler.Scanner.getNextToken()
-            } else {
-              errorAndQuit("Syntax Error: Variable Def Error, missing : " + constent.ADDRESSE)
-            }
-          } else {
-            errorAndQuit("Syntax Error: Variable Def Error, Not Text")
-          }
-        } else {
-          errorAndQuit("Syntax Error: Variable Def Error, missing : " + constent.ADDRESSB)
-        }
-      } else {
-        errorAndQuit("Syntax Error: Variable Def Error, missing : " + constent.SQBRACKETE)
-      }
+              variableDefine()
+            } else errorAndQuit("Syntax Error: Variable Def Error, Not " + constent.SQBRACKETE)
+          } else errorAndQuit("Syntax Error: Variable Def Error, Not value defined")
+        } else errorAndQuit("Syntax Error: Variable Def Error, Not " + constent.EQSIGN)
+      } else errorAndQuit("Syntax Error: Variable Def Error, No variable name")
     }
   }
 
   override def variableUse(): Unit = {
-
+    if(Compiler.currentToken == constent.USEB){
+      Compiler.Scanner.getNextToken()
+      if(isText(Compiler.currentToken)){
+        Compiler.Scanner.getNextToken()
+      }else errorAndQuit("Syntax Error: Variable Use Error, No variable name")
+    }
   }
 
   override def bold(): Unit = {

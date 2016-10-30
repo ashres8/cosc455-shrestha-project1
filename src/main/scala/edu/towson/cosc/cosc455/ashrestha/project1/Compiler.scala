@@ -17,12 +17,10 @@ object Compiler {
   def main(args: Array[String]): Unit = {
     fileCheck(args)
     println(fileContent)
-
     Scanner.listFileContent = fileContent.toArray
 
     Scanner.getNextToken()
-    println("Compiler: " + currentToken)
-
+    //println("Compiler: " + currentToken)
     Parser.gittex()
   }
 
@@ -40,8 +38,9 @@ object Compiler {
     }
   }
 
+  //Reads the file and puts it in 'fileContent'
   def readFile(file : String): Unit ={
-    val source = scala.io.Source.fromFile(file);
+    val source = scala.io.Source.fromFile(file)
     fileContent = try source.mkString finally source.close()
   }
 }

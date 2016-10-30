@@ -27,7 +27,7 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
   override def getNextToken(): Unit = {
     //println("Getting Token...")
     strToken = ""
-    while(isSpace(currentChar) || currentChar == '\n' || currentChar == '\t') {
+    while(isSpace(currentChar) || currentChar == '\n' || currentChar == '\t' || currentChar == '\r') {
       currentChar = getChar()
     }
 
@@ -38,6 +38,9 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
     }
 
     println("Lexical: " + strToken)
+    if(strToken == "\r"){
+      getNextToken()
+    }
     Compiler.currentToken = strToken
   }
 
@@ -56,7 +59,7 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
       //println("Found Normal Char: " + currentChar)
       addChar()
       currentChar = getChar()
-    } while (!constant.SpacialChar.contains(currentChar) && currentChar != '\n')
+    } while (!constant.SpacialChar.contains(currentChar) && currentChar != '\n' && currentChar != '\r')
   }
 
   def spacialChar(): Unit ={

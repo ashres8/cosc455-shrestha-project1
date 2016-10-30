@@ -1,9 +1,11 @@
 \BEGIN
+\DEF[ name = Asim Shrestha]
 \TITLE[The Simpsons]
 # The Simpsons
 \PARAB
 The members of the [The Simpsons](https://en.wikipedia.org/wiki/The_Simpsons) are:
 \PARAE
+\USE[name]
 + Homer Simpson
 + Marge Simpson
 + Bart Simpson
