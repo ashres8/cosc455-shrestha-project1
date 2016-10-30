@@ -60,14 +60,27 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
     }
   }
 
+  var itfound: Boolean = false
   override def innerText(): Unit = {
     while((!constent.notBody.contains(Compiler.currentToken)) && Compiler.currentToken != constent.PARAB){
-      println(Compiler.currentToken)
+      println("Inner Text:" + Compiler.currentToken)
+      if(!itfound) heading()
+      if(!itfound) bold()
+      if(!itfound) variableUse()
       Compiler.Scanner.getNextToken()
+      itfound = false
     }
   }
 
-  override def heading(): Unit = ???
+  override def heading(): Unit = {
+    if(Compiler.currentToken == constent.HEADING){
+      itfound = true
+      Compiler.Scanner.getNextToken()
+      if(isText(Compiler.currentToken)){
+        Compiler.Scanner.getNextToken()
+      }else errorAndQuit("Syntax Error: Text after Heading is missing.")
+    }
+  }
 
   override def variableDefine(): Unit = {
     if(Compiler.currentToken == constent.DEFB) {
@@ -95,9 +108,15 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
     }
   }
 
-  override def variableUse(): Unit = ???
+  override def variableUse(): Unit = {
 
-  override def bold(): Unit = ???
+  }
+
+  override def bold(): Unit = {
+    if(Compiler.currentToken == constent.BOLD){
+      itfound = true
+    }
+  }
 
   override def italics(): Unit = ???
 
