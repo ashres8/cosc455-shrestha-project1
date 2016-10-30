@@ -32,26 +32,40 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
         if(Compiler.currentToken == constent.SQBRACKETE){
           println("Title End Found !!")
           Compiler.Scanner.getNextToken()
-        } else {
-          errorAndQuit("Syntax Error: Title End missing : " + constent.SQBRACKETE)
-        }
-      } else {
-        errorAndQuit("Syntax Error: Not Text")
-      }
-    } else {
-      errorAndQuit("Syntax Error: Title Start missing : " + constent.TITLEB)
+        } else errorAndQuit("Syntax Error: Title End missing : " + constent.SQBRACKETE)
+      } else errorAndQuit("Syntax Error: Not Text")
+    } else errorAndQuit("Syntax Error: Title Start missing : " + constent.TITLEB)
+  }
+
+  var bodyfound: Boolean = false
+
+  override def body(): Unit = {
+    while(!constent.notBody.contains(Compiler.currentToken)){
+      if(!bodyfound) innerText()
+      if(!bodyfound) paragraph()
+      if(!bodyfound) newline()
+      bodyfound = false
     }
   }
 
-  override def body(): Unit = {
-    paragraph()
-    heading()
-    innerText()
+  override def paragraph(): Unit = {
+    if (Compiler.currentToken == constent.PARAB){
+      bodyfound = true
+      Compiler.Scanner.getNextToken()
+      variableDefine()
+      innerText()
+      if(Compiler.currentToken == constent.PARAE){
+        Compiler.Scanner.getNextToken()
+      } else errorAndQuit("Syntax Error: Paragraph End Missing" + constent.PARAE)
+    }
   }
 
-  override def paragraph(): Unit = ???
-
-  override def innerText(): Unit = ???
+  override def innerText(): Unit = {
+    while((!constent.notBody.contains(Compiler.currentToken)) && Compiler.currentToken != constent.PARAB){
+      println(Compiler.currentToken)
+      Compiler.Scanner.getNextToken()
+    }
+  }
 
   override def heading(): Unit = ???
 
@@ -95,7 +109,12 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
 
   override def image(): Unit = ???
 
-  override def newline(): Unit = ???
+  override def newline(): Unit = {
+    if(Compiler.currentToken == constent.NEWLINE) {
+      println("Yay a new line")
+      Compiler.Scanner.getNextToken()
+    }
+  }
 
   def errorAndQuit(str: String): Unit = {
     println(str)
