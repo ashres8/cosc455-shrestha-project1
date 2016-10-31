@@ -24,7 +24,8 @@ class CONSTENT {
   val USEB = "\\USE["
   val NEXTLINE = "\n"
   val ArrayOfTokens: Array[String] = Array(DOCB, DOCE, TITLEB, SQBRACKETE, PARAB, PARAE, NEWLINE, DEFB, USEB, LINKB, IMAGEB, EQSIGN, ADDRESSE, ADDRESSB, LISTITEM, ITALICS, BOLD, HEADING)
-  val notBody: Array[String] = Array(DOCB, TITLEB, DEFB)
+  val notBody: Array[String] = Array(DOCB, TITLEB, DEFB, DOCE)
+  val innerItemTokens: Array[String] = Array(BOLD, USEB, LINKB, ITALICS)
   //val InnerText: List[String] = List(PARAB, HEADING)
   val SpacialChar: Array[Char] = Array('\\', '*', '!', '[', ']', '(', ')', '+', '#', '=')
 }

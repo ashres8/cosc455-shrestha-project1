@@ -1,5 +1,6 @@
 package edu.towson.cosc.cosc455.ashrestha.project1
 
+import scala.collection.mutable.ArrayBuffer
 import scala.io.Source._
 
 /**
@@ -9,6 +10,7 @@ object Compiler {
 
   var fileContent: String = ""
   var currentToken: String = ""
+  var analyzedTokens: ArrayBuffer[String] = new ArrayBuffer[String]()
 
   val Scanner = new MyLexicalAnalyzer
   val Parser = new MySyntaxAnalyzer
