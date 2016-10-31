@@ -17,13 +17,9 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
         Compiler.analyzedTokens.append("DOCE")
         println("Done !!")
 
-        print("Array: " + Compiler.analyzedTokens.mkString(", "))
-      }else {
-        errorAndQuit("Syntax Error: Document End missing : " + constent.DOCE)
-      }
-    } else {
-      errorAndQuit("Syntax Error: Document Start missing : " + constent.DOCB)
-    }
+        println("Array: " + Compiler.analyzedTokens.mkString(", "))
+      } else errorAndQuit("Syntax Error: Document End missing : " + constent.DOCE)
+    } else errorAndQuit("Syntax Error: Document Start missing : " + constent.DOCB)
   }
 
   override def title(): Unit = {
@@ -76,12 +72,14 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
     while((!constent.notBody.contains(Compiler.currentToken)) && Compiler.currentToken != constent.PARAB && Compiler.currentToken != constent.PARAE && Compiler.currentToken != constent.NEWLINE){
       //println("Inner Text: " + Compiler.currentToken)
       bodyfound = true
+      if(!itfound) variableUse()
       if(!itfound) heading()
       if(!itfound) bold()
-      if(!itfound) variableUse()
+      if(!itfound) italics()
       if(!itfound) link()
       if(!itfound) image()
       if(!itfound) listItem()
+      if(!itfound) newline()
       if(!itfound && isText(Compiler.currentToken)){
         itfound = true
         Compiler.analyzedTokens.append(Compiler.currentToken)
@@ -140,8 +138,8 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
         if(Compiler.currentToken == constent.SQBRACKETE) {
           Compiler.analyzedTokens.append("USEE")
           Compiler.Scanner.getNextToken()
-        }
-      }else errorAndQuit("Variable Use Error, No variable name")
+        } else errorAndQuit("Variable Use Error, No " + constent.SQBRACKETE)
+      } else errorAndQuit("Variable Use Error, No variable name")
     }
   }
 
@@ -157,8 +155,8 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
         if(Compiler.currentToken == constent.BOLD){
           Compiler.analyzedTokens.append("BOLDE")
           Compiler.Scanner.getNextToken()
-        }
-      }
+        } else errorAndQuit("Italics ERROR Missing " + constent.BOLD)
+      } else errorAndQuit("Italics ERROR Missing TEXT ")
     }
   }
 
@@ -174,8 +172,8 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
         if(Compiler.currentToken == constent.ITALICS){
           Compiler.analyzedTokens.append("ITALICSE")
           Compiler.Scanner.getNextToken()
-        }
-      }
+        } else errorAndQuit("Italics ERROR Missing " + constent.ITALICS)
+      } else errorAndQuit("Italics ERROR Missing TEXT ")
     }
   }
 
@@ -195,8 +193,10 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
 
   override def innerItem(): Unit = {
     if(constent.innerItemTokens.contains(Compiler.currentToken) || isText(Compiler.currentToken)){
-      println("innerItem: " + Compiler.currentToken)
+      //println("innerItem: " + Compiler.currentToken)
       if(!innerItemFound) bold()
+      if(!innerItemFound) italics()
+      if(!innerItemFound) link()
       if(!innerItemFound) variableUse()
       if(!innerItemFound && isText(Compiler.currentToken)){
         innerItemFound = true
