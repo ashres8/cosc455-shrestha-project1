@@ -8,23 +8,23 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
 
   override def gittex(): Unit = {
     if(Compiler.currentToken == constent.DOCB){
-      Compiler.analyzedTokens.append("DOCB")
+      Compiler.analyzedTokens.append("<DOCB>")
       Compiler.Scanner.getNextToken()
       variableDefine()
       title()
       body()
       if(Compiler.currentToken == constent.DOCE){
-        Compiler.analyzedTokens.append("DOCE")
+        Compiler.analyzedTokens.append("<DOCE>")
         println("Done !!")
-
         println("Array: " + Compiler.analyzedTokens.mkString(", "))
+        Compiler.SemanticAna.startConvert()
       } else errorAndQuit("Syntax Error: Document End missing : " + constent.DOCE)
     } else errorAndQuit("Syntax Error: Document Start missing : " + constent.DOCB)
   }
 
   override def title(): Unit = {
     if(Compiler.currentToken == constent.TITLEB){
-      Compiler.analyzedTokens.append("TITLEB")
+      Compiler.analyzedTokens.append("<TITLEB>")
       println("Title Begin Found !!")
       Compiler.Scanner.getNextToken()
       if(isText(Compiler.currentToken)){
@@ -32,7 +32,7 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
         println("Text Begin Found !!")
         Compiler.Scanner.getNextToken()
         if(Compiler.currentToken == constent.SQBRACKETE){
-          Compiler.analyzedTokens.append("TITLEE")
+          Compiler.analyzedTokens.append("<TITLEE>")
           println("Title End Found !!")
           Compiler.Scanner.getNextToken()
         } else errorAndQuit("Syntax Error: Title End missing : " + constent.SQBRACKETE)
@@ -55,13 +55,13 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
   override def paragraph(): Unit = {
     if (Compiler.currentToken == constent.PARAB){
       bodyfound = true
-      Compiler.analyzedTokens.append("PARAB")
+      Compiler.analyzedTokens.append("<PARAB>")
       Compiler.Scanner.getNextToken()
       itfound = false
       variableDefine()
       innerText()
       if(Compiler.currentToken == constent.PARAE){
-        Compiler.analyzedTokens.append("PARAE")
+        Compiler.analyzedTokens.append("<PARAE>")
         Compiler.Scanner.getNextToken()
       } else errorAndQuit("Syntax Error: Paragraph End Missing" + constent.PARAE)
     }
@@ -92,11 +92,11 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
   override def heading(): Unit = {
     if(Compiler.currentToken == constent.HEADING){
       itfound = true
-      Compiler.analyzedTokens.append("HEADINGB")
+      Compiler.analyzedTokens.append("<HEADINGB>")
       Compiler.Scanner.getNextToken()
       if(isText(Compiler.currentToken)){
         Compiler.analyzedTokens.append(Compiler.currentToken)
-        Compiler.analyzedTokens.append("HEADINGE")
+        Compiler.analyzedTokens.append("<HEADINGE>")
         Compiler.Scanner.getNextToken()
       } else errorAndQuit("Syntax Error: Text after Heading is missing.")
     }
@@ -104,19 +104,19 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
 
   override def variableDefine(): Unit = {
     if(Compiler.currentToken == constent.DEFB) {
-      Compiler.analyzedTokens.append("DEFB")
+      Compiler.analyzedTokens.append("<DEFB>")
       Compiler.Scanner.getNextToken()
       if(isText(Compiler.currentToken)){
         Compiler.analyzedTokens.append(Compiler.currentToken)
         Compiler.Scanner.getNextToken()
         if(Compiler.currentToken == constent.EQSIGN){
-          Compiler.analyzedTokens.append("EQSIGN")
+          Compiler.analyzedTokens.append("<EQSIGN>")
           Compiler.Scanner.getNextToken()
           if(isText(Compiler.currentToken)){
             Compiler.analyzedTokens.append(Compiler.currentToken)
             Compiler.Scanner.getNextToken()
             if(Compiler.currentToken == constent.SQBRACKETE){
-              Compiler.analyzedTokens.append("DEFE")
+              Compiler.analyzedTokens.append("<DEFE>")
               Compiler.Scanner.getNextToken()
               variableDefine()
             } else errorAndQuit("Variable Def Error, Not " + constent.SQBRACKETE)
@@ -130,13 +130,13 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
     if(Compiler.currentToken == constent.USEB){
       itfound = true
       innerItemFound = true
-      Compiler.analyzedTokens.append("USEB")
+      Compiler.analyzedTokens.append("<USEB>")
       Compiler.Scanner.getNextToken()
       if(isText(Compiler.currentToken)){
         Compiler.analyzedTokens.append(Compiler.currentToken)
         Compiler.Scanner.getNextToken()
         if(Compiler.currentToken == constent.SQBRACKETE) {
-          Compiler.analyzedTokens.append("USEE")
+          Compiler.analyzedTokens.append("<USEE>")
           Compiler.Scanner.getNextToken()
         } else errorAndQuit("Variable Use Error, No " + constent.SQBRACKETE)
       } else errorAndQuit("Variable Use Error, No variable name")
@@ -147,13 +147,13 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
     if(Compiler.currentToken == constent.BOLD){
       itfound = true
       innerItemFound = true
-      Compiler.analyzedTokens.append("BOLDB")
+      Compiler.analyzedTokens.append("<BOLDB>")
       Compiler.Scanner.getNextToken()
       if(isText(Compiler.currentToken)){
         Compiler.analyzedTokens.append(Compiler.currentToken)
         Compiler.Scanner.getNextToken()
         if(Compiler.currentToken == constent.BOLD){
-          Compiler.analyzedTokens.append("BOLDE")
+          Compiler.analyzedTokens.append("<BOLDE>")
           Compiler.Scanner.getNextToken()
         } else errorAndQuit("Italics ERROR Missing " + constent.BOLD)
       } else errorAndQuit("Italics ERROR Missing TEXT ")
@@ -164,13 +164,13 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
     if(Compiler.currentToken == constent.ITALICS){
       itfound = true
       innerItemFound = true
-      Compiler.analyzedTokens.append("ITALICSB")
+      Compiler.analyzedTokens.append("<ITALICSB>")
       Compiler.Scanner.getNextToken()
       if(isText(Compiler.currentToken)){
         Compiler.analyzedTokens.append(Compiler.currentToken)
         Compiler.Scanner.getNextToken()
         if(Compiler.currentToken == constent.ITALICS){
-          Compiler.analyzedTokens.append("ITALICSE")
+          Compiler.analyzedTokens.append("<ITALICSE>")
           Compiler.Scanner.getNextToken()
         } else errorAndQuit("Italics ERROR Missing " + constent.ITALICS)
       } else errorAndQuit("Italics ERROR Missing TEXT ")
@@ -181,11 +181,11 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
   override def listItem(): Unit = {
     if(Compiler.currentToken == constent.LISTITEM){
       bodyfound = true
-      Compiler.analyzedTokens.append("LISTITEMB")
+      Compiler.analyzedTokens.append("<LISTITEMB>")
       Compiler.Scanner.getNextToken()
       innerItemFound = false
       innerItem()
-      Compiler.analyzedTokens.append("LISTITEME")
+      Compiler.analyzedTokens.append("<LISTITEME>")
       Compiler.Scanner.getNextToken()
       listItem()
     }
@@ -211,22 +211,22 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
     if (Compiler.currentToken == constent.LINKB){
       itfound = true
       innerItemFound = true
-      Compiler.analyzedTokens.append("LINKB")
+      Compiler.analyzedTokens.append("<LINKB>")
       Compiler.Scanner.getNextToken()
       if(isText(Compiler.currentToken)) {
         Compiler.analyzedTokens.append(Compiler.currentToken)
         Compiler.Scanner.getNextToken()
         if(Compiler.currentToken == constent.SQBRACKETE){
-          Compiler.analyzedTokens.append("SQBRACKETE")
+          Compiler.analyzedTokens.append("<SQBRACKETE>")
           Compiler.Scanner.getNextToken()
           if(Compiler.currentToken == constent.ADDRESSB){
-            Compiler.analyzedTokens.append("ADDRESSB")
+            Compiler.analyzedTokens.append("<ADDRESSB>")
             Compiler.Scanner.getNextToken()
             if(isText(Compiler.currentToken)){
               Compiler.analyzedTokens.append(Compiler.currentToken)
               Compiler.Scanner.getNextToken()
               if(Compiler.currentToken == constent.ADDRESSE){
-                Compiler.analyzedTokens.append("ADDRESSE")
+                Compiler.analyzedTokens.append("<ADDRESSE>")
                 Compiler.Scanner.getNextToken()
               } else errorAndQuit("Link Use ERROR Missing " + constent.ADDRESSE)
             } else errorAndQuit("Link ERROR Missing URL")
@@ -239,22 +239,22 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
   override def image(): Unit = {
     if (Compiler.currentToken == constent.IMAGEB){
       itfound = true
-      Compiler.analyzedTokens.append("IMAGEB")
+      Compiler.analyzedTokens.append("<IMAGEB>")
       Compiler.Scanner.getNextToken()
       if(isText(Compiler.currentToken)) {
         Compiler.analyzedTokens.append(Compiler.currentToken)
         Compiler.Scanner.getNextToken()
         if(Compiler.currentToken == constent.SQBRACKETE){
-          Compiler.analyzedTokens.append("SQBRACKETE")
+          Compiler.analyzedTokens.append("<SQBRACKETE>")
           Compiler.Scanner.getNextToken()
           if(Compiler.currentToken == constent.ADDRESSB){
-            Compiler.analyzedTokens.append("ADDRESSB")
+            Compiler.analyzedTokens.append("<ADDRESSB>")
             Compiler.Scanner.getNextToken()
             if(isText(Compiler.currentToken)){
               Compiler.analyzedTokens.append(Compiler.currentToken)
               Compiler.Scanner.getNextToken()
               if(Compiler.currentToken == constent.ADDRESSE){
-                Compiler.analyzedTokens.append("ADDRESSE")
+                Compiler.analyzedTokens.append("<ADDRESSE>")
                 Compiler.Scanner.getNextToken()
               } else errorAndQuit("Image Use ERROR Missing " + constent.ADDRESSE)
             } else errorAndQuit("Image ERROR Missing URL")
@@ -267,7 +267,7 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
   override def newline(): Unit = {
     if(Compiler.currentToken == constent.NEWLINE) {
       bodyfound = true
-      Compiler.analyzedTokens.append("NEWLINE")
+      Compiler.analyzedTokens.append("<NEWLINE>")
       Compiler.Scanner.getNextToken()
     }
   }

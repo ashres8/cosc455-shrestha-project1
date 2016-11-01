@@ -28,4 +28,11 @@ class CONSTENT {
   val innerItemTokens: Array[String] = Array(BOLD, USEB, LINKB, ITALICS)
   //val InnerText: List[String] = List(PARAB, HEADING)
   val SpacialChar: Array[Char] = Array('\\', '*', '!', '[', ']', '(', ')', '+', '#', '=')
+
+  val ArrayOfTokensSem: Array[String] = Array("<DOCB>", "<DOCE>", "<TITLEB>", "<SQBRACKETE>", "<PARAB>", "<PARAE>", "<NEWLINE>", "<DEFB>", "<USEB>", "<LINKB>", "<IMAGEB>",
+      "<EQSIGN>", "<ADDRESSE>", "<ADDRESSB>", "<LISTITEM>", "<ITALICS>", "<BOLD>", "<HEADING>")
+
+  val ArrayOfTokensSemEnd: Array[String] = Array("<DOCE>", "<TITLEE>", "<PARAE>", "<DEFE>", "<USEE>",
+      "<LINKE>", "<IMAGEE>", "<ADDRESSE>", "<LISTITEME>", "<ITALICSE>", "<BOLDE>", "<HEADINGE>")
+  
 }
