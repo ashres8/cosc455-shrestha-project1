@@ -51,7 +51,7 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
 
   //Looks up the Current token if it is valid
   override def lookup(): Boolean = {
-    println(strToken)
+    //println(strToken)
     for (word <- constant.ArrayOfTokens){
       if(word.equalsIgnoreCase(strToken)){
         return true
@@ -94,6 +94,10 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
         addChar()
         currentChar = getChar()
       }
+
+      strToken = strToken.toUpperCase
+      //println(strToken)
+
     } else if(currentChar == '*'){
       addChar()
       currentChar = getChar()
@@ -114,6 +118,8 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
       addChar()
       currentChar = getChar()
     }
+
+
 
     if(!lookup()){
       errorAndQuit("Lexical Error:: can't find '" + strToken + "'")

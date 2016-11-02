@@ -1,4 +1,4 @@
-\BEGIN
+\begin
 \DEF[ name = Asim Shrestha]
 \TITLE[The Simpsons]
 # The Simpsons
