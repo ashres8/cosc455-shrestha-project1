@@ -2,6 +2,7 @@ package edu.towson.cosc.cosc455.ashrestha.project1
 
 /**
   * Created by ashres8 on 10/11/2016.
+  * This contains all the arrays and constant variable mostly tokens
   */
 class CONSTENT {
   val DOCB: String = "\\BEGIN"

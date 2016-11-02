@@ -5,7 +5,7 @@ package edu.towson.cosc.cosc455.ashrestha.project1
   */
 class MySyntaxAnalyzer extends SyntaxAnalyzer{
   val constent = new CONSTENT
-
+  //Simple check for document starts and goes to different methods according to the grammer
   override def gittex(): Unit = {
     if(Compiler.currentToken == constent.DOCB){
       Compiler.analyzedTokens.append("<DOCB>")
@@ -67,6 +67,9 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
     }
   }
 
+  /*
+   * Goes in a loop looking for all the different tokens it can use if not it is done
+   * */
   var itfound: Boolean = false
   override def innerText(): Unit = {
     while((!constent.notBody.contains(Compiler.currentToken)) && Compiler.currentToken != constent.PARAB && Compiler.currentToken != constent.PARAE && Compiler.currentToken != constent.NEWLINE){

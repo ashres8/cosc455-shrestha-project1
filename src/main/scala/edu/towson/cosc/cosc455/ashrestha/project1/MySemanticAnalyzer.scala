@@ -12,22 +12,23 @@ class MySemanticAnalyzer {
   var constent = new CONSTENT
   var sIndex = 0
   def startConvert(): Unit ={
-    println("Semantic: ")
+    //println("Semantic: ")
     stack = Compiler.analyzedTokens.toList.reverse
-    println(stack)
+    //println(stack)
+    //Matches the token to the top of the 'stack'
     while(stack.nonEmpty){
       stack match{
         case "<DOCB>"::rest =>
           resolved = "<!DOCTYPE html>\n<html>\n<head>\n"::resolved
           stack = rest
         case "<DOCE>"::rest =>
-          resolved = "</html>"::resolved
+          resolved = "</body>\n</html>"::resolved
           stack = rest
         case "<TITLEB>"::rest =>
           resolved = "<title>"::resolved
           stack = rest
         case "<TITLEE>"::rest =>
-          resolved = "</title>\n</head>\n"::resolved
+          resolved = "</title>\n</head>\n<body>\n"::resolved
           stack = rest
         case "<PARAB>"::rest =>
           resolved = "<p>\n"::resolved
@@ -57,7 +58,7 @@ class MySemanticAnalyzer {
           resolved = "<h1>"::resolved
           stack = rest
         case "<HEADINGE>"::rest =>
-          resolved = "</h2>"::resolved
+          resolved = "</h1>"::resolved
           stack = rest
         case "<NEWLINE>"::rest =>
           resolved = "<br>\n"::resolved
@@ -75,19 +76,20 @@ class MySemanticAnalyzer {
         case "<USEB>"::rest =>
           stack = rest
         case "<USEE>"::rest =>
-          println("Var: " + rest.head)
+          //println("Var: " + rest.head)
           resolved = getvaluefor(rest.head)::resolved
           stack = rest.tail
         case "<ADDRESSE>"::rest =>
           val v = findLinkOrImage(stack)
-          println("ADDRESS: " + rest.head)
-          val href = rest.head
+          //println("ADDRESS: " + rest.head)
+          //Saves the url and the info/label of the img and link
+          val url = rest.head
           val info = rest.drop(3).head
           v match{
             case 0 =>
-              resolved = "<a href=" + href +">" + info + "</a>\n"::resolved
+              resolved = "<a href=" + url +">" + info + "</a>\n"::resolved
             case 1 =>
-              resolved = "<img src="+ href +" alt=\"" + info +"\">\n"::resolved
+              resolved = "<img src="+ url +" alt=\"" + info +"\">\n"::resolved
             case _ => errorAndQuit("Cant find Image or Link Start.")
           }
           stack = rest.drop(4)
@@ -102,11 +104,12 @@ class MySemanticAnalyzer {
     openHTMLFileInBrowser(Compiler.filename + ".html")
   }
 
+  /* Finds weather is address in a link or an image */
   def findLinkOrImage(list: List[String]): Int = {
     var temp = 0
     var found = false
     while(temp < stack.size - 1 && !found){
-      println("tmp: " + temp)
+      //println("tmp: " + temp)
       if(constent.linkOrImage.contains(stack(temp))){
         stack(temp) match{
           case "<LINKB>" => found = true
@@ -124,7 +127,7 @@ class MySemanticAnalyzer {
     var tmpIndex = 0
     var found = false
     var result = ""
-    println(stack)
+    //println(stack)
     while(tmpIndex < stack.size - 1 && !found){
       //println("tmp: " + tmpIndex)
       //println(stack(tmpIndex))
@@ -135,7 +138,7 @@ class MySemanticAnalyzer {
           if(dname == str.replaceAll("\\s", "")){
             found = true
             result = stack(tmpIndex + 1)
-            println(result)
+            //println(result)
           }
         } else {
           val tokenBeg = stack(tmpIndex).dropRight(2) + "B>"
@@ -167,6 +170,7 @@ class MySemanticAnalyzer {
     System.exit(1)
   }
 
+  //Writes the HTML File and exports it in the same folder
   def createHTMLFile(str: String): Unit ={
     val fw = new PrintWriter(new File(Compiler.filename + ".html"))
     fw.write(str)

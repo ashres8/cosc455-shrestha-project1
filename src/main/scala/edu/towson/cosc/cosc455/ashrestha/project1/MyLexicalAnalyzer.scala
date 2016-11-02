@@ -11,10 +11,12 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
   var currentChar: Char = ' '
   var fileIndex = 0
 
+  //Adds the last character to the string
   override def addChar(): Unit = {
     strToken = strToken + currentChar
   }
 
+  //Gets a new char form the file string
   override def getChar(): Char = {
     if(fileIndex >= listFileContent.length) {
       return '\n'
@@ -25,6 +27,7 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
     c
   }
 
+  //Creates a token for the syntax analyser to use
   override def getNextToken(): Unit = {
     //println("Getting Token...")
     strToken = ""
@@ -39,12 +42,14 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
     }
 
     println("Lexical: " + strToken)
+    //redoes the getNextToken function if the token is "\r"
     if(strToken == "\r"){
       getNextToken()
     }
     Compiler.currentToken = strToken
   }
 
+  //Looks up the Current token if it is valid
   override def lookup(): Boolean = {
     println(strToken)
     for (word <- constant.ArrayOfTokens){
@@ -55,6 +60,7 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
     false
   }
 
+  //Loops and gets every char as text
   def textChar() = {
     do{
       //println("Found Normal Char: " + currentChar)
@@ -63,6 +69,7 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
     } while (!constant.SpacialChar.contains(currentChar) && currentChar != '\n' && currentChar != '\r')
   }
 
+  //Function to check spacial tokens
   def spacialChar(): Unit ={
     /* while(!isSpace(currentChar) && currentChar != '\n') {
       println("Found Char: " + currentChar)
@@ -115,6 +122,7 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
 
   def isSpace(c: Char): Boolean = c == ' '
 
+  //Shows an error and quits :D
   def errorAndQuit(str: String): Unit = {
     println(str)
     System.exit(1)

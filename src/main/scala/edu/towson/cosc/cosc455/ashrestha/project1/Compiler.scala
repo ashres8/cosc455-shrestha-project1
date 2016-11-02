@@ -27,6 +27,7 @@ object Compiler {
     Parser.gittex()
   }
 
+  //Checks the file if it is an *.mkd file or has too many arguments
   def fileCheck(args: Array[String]): Unit ={
     if (args.length != 1){
       println("Error: There are too many arguments. Please enter a *.mkd File.")
@@ -36,8 +37,9 @@ object Compiler {
         println("Error: Please enter a *.mkd File.")
         System.exit(1)
       } else {
+        //Only gets the name of the file, so without the extension
         filename = args(0).dropRight(4)
-        println(filename)
+        //println(filename)
         readFile(args(0))
       }
     }
