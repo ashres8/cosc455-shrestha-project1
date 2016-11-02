@@ -11,6 +11,7 @@ object Compiler {
   var fileContent: String = ""
   var currentToken: String = ""
   var analyzedTokens: ArrayBuffer[String] = new ArrayBuffer[String]()
+  var filename: String = ""
 
   val Scanner = new MyLexicalAnalyzer
   val Parser = new MySyntaxAnalyzer
@@ -35,6 +36,8 @@ object Compiler {
         println("Error: Please enter a *.mkd File.")
         System.exit(1)
       } else {
+        filename = args(0).dropRight(4)
+        println(filename)
         readFile(args(0))
       }
     }

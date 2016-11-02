@@ -186,7 +186,6 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
       innerItemFound = false
       innerItem()
       Compiler.analyzedTokens.append("<LISTITEME>")
-      Compiler.Scanner.getNextToken()
       listItem()
     }
   }
