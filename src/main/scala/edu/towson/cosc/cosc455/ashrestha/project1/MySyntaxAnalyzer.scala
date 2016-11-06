@@ -1,6 +1,7 @@
 package edu.towson.cosc.cosc455.ashrestha.project1
 
 /**
+  * Gathers Token By Token and checks if the syntax makes sence
   * Created by ashres8 on 10/11/2016.
   */
 class MySyntaxAnalyzer extends SyntaxAnalyzer{
@@ -204,7 +205,7 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
 
   override def innerItem(): Unit = {
     if(constent.innerItemTokens.contains(Compiler.currentToken) || isText(Compiler.currentToken)){
-      println("innerItem: " + Compiler.currentToken)
+      //println("innerItem: " + Compiler.currentToken)
       if(isText(Compiler.currentToken)){
         innerItemFound = true
         Compiler.analyzedTokens.append(Compiler.currentToken)

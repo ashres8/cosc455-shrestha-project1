@@ -4,6 +4,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.io.Source._
 
 /**
+  * Main Program that makes the program ready to run and checks the files
   * Created by ashres8 on 10/11/2016.
   */
 object Compiler {
@@ -30,7 +31,7 @@ object Compiler {
   //Checks the file if it is an *.mkd file or has too many arguments
   def fileCheck(args: Array[String]): Unit ={
     if (args.length != 1){
-      println("Error: There are too many arguments. Please enter a *.mkd File.")
+      println("Error: There are too many/low arguments. Please enter a *.mkd File.")
       System.exit(1)
     } else {
       if(!args(0).endsWith(".mkd")){

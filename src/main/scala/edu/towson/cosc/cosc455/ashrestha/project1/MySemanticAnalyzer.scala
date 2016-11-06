@@ -4,6 +4,7 @@ import java.awt.Desktop
 import java.io.{File, IOException, PrintWriter}
 
 /**
+  * Converts the Parse Tree into html file in the same folder and then opens it
   * Created by ashres8 on 10/11/2016.
   */
 class MySemanticAnalyzer {

@@ -1,6 +1,7 @@
 package edu.towson.cosc.cosc455.ashrestha.project1
 
 /**
+  * Creates a Token then gets it ready to compile it :P
   * Created by ashres8 on 10/11/2016.
   */
 
