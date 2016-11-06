@@ -10,30 +10,34 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
     if(Compiler.currentToken == constent.DOCB){
       Compiler.analyzedTokens.append("<DOCB>")
       Compiler.Scanner.getNextToken()
-      variableDefine()
       title()
+      variableDefine()
       body()
       if(Compiler.currentToken == constent.DOCE){
         Compiler.analyzedTokens.append("<DOCE>")
-        println("Done !!")
-        println("Array: " + Compiler.analyzedTokens.mkString(", "))
+        //println("Done!!")
+        //println("Array: " + Compiler.analyzedTokens.mkString(", "))
+        Compiler.Scanner.getNextToken()
+        if(constianS(Compiler.currentToken)){
+          errorAndQuit("Found after: " + constent.DOCE + ". Found " + Compiler.currentToken)
+        }
         Compiler.SemanticAna.startConvert()
-      } else errorAndQuit("Syntax Error: Document End missing : " + constent.DOCE)
-    } else errorAndQuit("Syntax Error: Document Start missing : " + constent.DOCB)
+      } else errorAndQuit("Document End missing : " + constent.DOCE + ". Found " + Compiler.currentToken)
+    } else errorAndQuit("Document Start missing : " + constent.DOCB + ". Found " + Compiler.currentToken)
   }
 
   override def title(): Unit = {
     if(Compiler.currentToken == constent.TITLEB){
       Compiler.analyzedTokens.append("<TITLEB>")
-      println("Title Begin Found !!")
+      //println("Title Begin Found !!")
       Compiler.Scanner.getNextToken()
       if(isText(Compiler.currentToken)){
         Compiler.analyzedTokens.append(Compiler.currentToken)
-        println("Text Begin Found !!")
+        //println("Text Begin Found !!")
         Compiler.Scanner.getNextToken()
         if(Compiler.currentToken == constent.SQBRACKETE){
           Compiler.analyzedTokens.append("<TITLEE>")
-          println("Title End Found !!")
+          //println("Title End Found !!")
           Compiler.Scanner.getNextToken()
         } else errorAndQuit("Syntax Error: Title End missing : " + constent.SQBRACKETE)
       } else errorAndQuit("Syntax Error: Not Text")
@@ -43,7 +47,7 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
   var bodyfound: Boolean = false
 
   override def body(): Unit = {
-    while(!constent.notBody.contains(Compiler.currentToken)){
+    while(!constent.notBody.contains(Compiler.currentToken) && Compiler.currentToken != constent.PARAE){
       itfound = false
       if(!bodyfound) innerText()
       if(!bodyfound) paragraph()
@@ -158,8 +162,11 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
         if(Compiler.currentToken == constent.BOLD){
           Compiler.analyzedTokens.append("<BOLDE>")
           Compiler.Scanner.getNextToken()
-        } else errorAndQuit("Italics ERROR Missing " + constent.BOLD)
-      } else errorAndQuit("Italics ERROR Missing TEXT ")
+        } else errorAndQuit("Bold ERROR Missing End" + constent.BOLD)
+      } else if(Compiler.currentToken == constent.BOLD){
+        Compiler.analyzedTokens.append("<BOLDE>")
+        Compiler.Scanner.getNextToken()
+      } else errorAndQuit("Bold ERROR Missing End" + constent.BOLD)
     }
   }
 
@@ -175,8 +182,11 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
         if(Compiler.currentToken == constent.ITALICS){
           Compiler.analyzedTokens.append("<ITALICSE>")
           Compiler.Scanner.getNextToken()
-        } else errorAndQuit("Italics ERROR Missing " + constent.ITALICS)
-      } else errorAndQuit("Italics ERROR Missing TEXT ")
+        } else errorAndQuit("Italics ERROR Missing end" + constent.ITALICS)
+      } else if(Compiler.currentToken == constent.ITALICS){
+        Compiler.analyzedTokens.append("<ITALICSE>")
+        Compiler.Scanner.getNextToken()
+      } else errorAndQuit("Italics ERROR Missing end" + constent.ITALICS)
     }
   }
 
@@ -189,21 +199,24 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
       innerItemFound = false
       innerItem()
       Compiler.analyzedTokens.append("<LISTITEME>")
-      listItem()
     }
   }
 
   override def innerItem(): Unit = {
     if(constent.innerItemTokens.contains(Compiler.currentToken) || isText(Compiler.currentToken)){
-      //println("innerItem: " + Compiler.currentToken)
+      println("innerItem: " + Compiler.currentToken)
+      if(isText(Compiler.currentToken)){
+        innerItemFound = true
+        Compiler.analyzedTokens.append(Compiler.currentToken)
+        Compiler.Scanner.getNextToken()
+      }
       if(!innerItemFound) bold()
       if(!innerItemFound) italics()
       if(!innerItemFound) link()
       if(!innerItemFound) variableUse()
-      if(!innerItemFound && isText(Compiler.currentToken)){
-        innerItemFound = true
-        Compiler.analyzedTokens.append(Compiler.currentToken)
-        Compiler.Scanner.getNextToken()
+      if(innerItemFound){
+        innerItemFound = false
+        innerItem()
       }
       innerItemFound = false
     }
@@ -275,7 +288,7 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
   }
 
   def errorAndQuit(str: String): Unit = {
-    print("Array: " + Compiler.analyzedTokens.mkString(", "))
+    println("Array: " + Compiler.analyzedTokens.mkString(", "))
     println("Syntax Error: " + str)
     System.exit(1)
   }
@@ -286,5 +299,13 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
         return false
     }
     true
+  }
+
+  def constianS(str: String): Boolean = {
+    for(spacialChar <- constent.SpacialChar){
+      if(str.contains(spacialChar))
+        return true
+    }
+    false
   }
 }

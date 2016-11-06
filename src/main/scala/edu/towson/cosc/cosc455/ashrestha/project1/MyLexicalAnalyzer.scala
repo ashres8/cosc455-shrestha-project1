@@ -31,7 +31,7 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
   override def getNextToken(): Unit = {
     //println("Getting Token...")
     strToken = ""
-    while(isSpace(currentChar) || currentChar == '\n' || currentChar == '\t' || currentChar == '\r') {
+    while((isSpace(currentChar) || currentChar == '\n' || currentChar == '\t' || currentChar == '\r') && fileIndex < listFileContent.length ){
       currentChar = getChar()
     }
 
@@ -41,7 +41,7 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
       textChar()
     }
 
-    println("Lexical: " + strToken)
+    //println("Lexical: " + strToken)
     //redoes the getNextToken function if the token is "\r"
     if(strToken == "\r"){
       getNextToken()
@@ -82,19 +82,32 @@ class MyLexicalAnalyzer extends LexicalAnalyzer{
     } */
 
     if(currentChar == '\\'){
-      do{
-        addChar()
-        currentChar = getChar()
-      } while (currentChar != '[' && currentChar != '\n' && !isSpace(currentChar) && currentChar != 0)
-
-      if(currentChar == '\n'){
-        if(fileIndex != listFileContent.length)
-          strToken = strToken.dropRight(1)
-      } else {
+      while (currentChar != '[' && currentChar != '\n' && !isSpace(currentChar) && currentChar != 0){
         addChar()
         currentChar = getChar()
       }
 
+      if(currentChar == '\r'){
+        currentChar = getChar()
+        //println("CC: " + currentChar)
+        //if(fileIndex != listFileContent.length)
+          //strToken = strToken.dropRight(1)
+      } else if(currentChar == '\n'){
+        currentChar = getChar()
+        //println("CC: " + currentChar)
+      } else {
+        addChar()
+        currentChar = getChar()
+      }
+      if(strToken.endsWith("\r")){
+        strToken = strToken.dropRight(1)
+      }
+      if(strToken.endsWith("\t")){
+        strToken = strToken.dropRight(1)
+      }
+      if(strToken.endsWith(" ")){
+        strToken = strToken.dropRight(1)
+      }
       strToken = strToken.toUpperCase
       //println(strToken)
 

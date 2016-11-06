@@ -1,6 +1,7 @@
-\begin
+\BEGIN
+	\TITLE[The Simpsons]
 \DEF[ name = Asim Shrestha]
-\TITLE[The Simpsons]
+\DEF[ name2 = Asim Shrestha]
 # The Simpsons
 \PARAB
 \DEF[ name = 2Shrestha]

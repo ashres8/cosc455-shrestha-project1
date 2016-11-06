@@ -15,7 +15,7 @@ class MySemanticAnalyzer {
     //println("Semantic: ")
     stack = Compiler.analyzedTokens.toList.reverse
     //println(stack)
-    //Matches the token to the top of the 'stack'
+    //Matches the token with the HTML Tag to the top of the 'stack'
     while(stack.nonEmpty){
       stack match{
         case "<DOCB>"::rest =>
